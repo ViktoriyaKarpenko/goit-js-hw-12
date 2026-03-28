@@ -11,56 +11,53 @@ const lightbox = new SimpleLightbox('.gallery a', {
   scrollZoom: false,
 });
 
-function createImageMarkup({
-  webformatURL,
-  largeImageURL,
-  tags,
-  likes,
-  views,
-  comments,
-  downloads,
-}) {
-  return `<li class="gallery-item">
-  <a href="${largeImageURL}">
-  <img 
-    class="image"
-    src="${webformatURL}"
-    data-source="${largeImageURL}"
-    alt="${tags}"
-    loading="lazy"
-  />
-  </a>
-  <ul class="info-list">
-  <li>
-  <p class="info-title">likes</p>
-  <p class="info-text">${likes}</p>
-  </li>
-  <li>
-  <p class="info-title">views</p>
-  <p class="info-text">${views}</p>
-  </li>
-  <li>
-  <p class="info-title">comments</p>
-  <p class="info-text">${comments}</p>
-  </li>
-  <li>
-  <p class="info-title">downloads</p>
-  <p class="info-text">${downloads}</p>
-  </li>
-  </ul>
-</li>`;
+function createImageMarkup(images) {
+  return images
+    .map(
+      ({
+        webformatURL,
+        largeImageURL,
+        tags,
+        likes,
+        views,
+        comments,
+        downloads,
+      }) => `<li class="gallery-item">
+    <a href="${largeImageURL}">
+      <img class="image" src="${webformatURL}" alt="${tags}" loading="lazy" />
+    </a>
+    <ul class="info-list">
+      <li><p class="info-title">Likes</p><p class="info-text">${likes}</p></li>
+      <li><p class="info-title">Views</p><p class="info-text">${views}</p></li>
+      <li><p class="info-title">Comments</p><p class="info-text">${comments}</p></li>
+      <li><p class="info-title">Downloads</p><p class="info-text">${downloads}</p></li>
+    </ul>
+  </li>`
+    )
+    .join('');
 }
 
 export function createGallery(images) {
-  if (!images || images.length === 0) {
-    return '';
-  }
-
-  return images.map(createImageMarkup).join('');
+  if (!gallery) return;
+  if (!images || images.length === 0) return;
+  gallery.innerHTML = createImageMarkup(images);
+  lightbox.refresh();
 }
 
-export function refreshLightbox() {
+export function appendToGallery(images) {
+  gallery.insertAdjacentHTML('beforeend', createImageMarkup(images));
   lightbox.refresh();
+}
+
+export function scrollToNewImages() {
+  const galleryItem = gallery?.querySelector('.gallery-item');
+  if (galleryItem) {
+    const height = galleryItem.getBoundingClientRect().height;
+    window.scrollBy({
+      top: height * 2,
+      behavior: 'smooth',
+    });
+  }
 }
 
 export function clearGallery() {

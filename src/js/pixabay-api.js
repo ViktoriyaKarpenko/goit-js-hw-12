@@ -14,7 +14,7 @@ export async function getImagesByQuery(query, page) {
     page: page,
     per_page: 15,
   };
-
+  console.log('Запрос с параметрами:', query, page);
   const res = await axios.get(url, { params });
   return res.data;
 }
