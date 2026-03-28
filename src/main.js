@@ -5,7 +5,7 @@ import 'izitoast/dist/css/iziToast.min.css';
 import './css/styles.css';
 
 import iziToast from 'izitoast';
-import { getImagesByQuery } from './js/pixabay-api';
+import { getImagesByQuery } from './js/pixabay-api.js';
 import {
   createGallery,
   clearGallery,
@@ -14,7 +14,7 @@ import {
   showLoadMoreButton,
   hideLoadMoreButton,
   refreshLightbox,
-} from './js/render-functions';
+} from './js/render-functions.js';
 
 const refs = {
   searchForm: document.querySelector('.form'),
